@@ -1,0 +1,140 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}Usuarios{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}Usuarios{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item active">Usuarios</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Alerta -->
+        {% if message %}
+        <div class="{{ alertClass }}" role="alert">
+            <strong>Error: </strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12 d-flex my-3">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#user-modal" onclick="resetModal()">Agregar</button>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Rol</th>
+                                    <th colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.lastname }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.role.alias }}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" onclick="getUser('{{ user._id }}')" data-toggle="modal" data-target="#user-modal">Editar</button>
+                                    </td>
+                                    <td>
+                                        {% if user.active %}
+                                            <button class="btn btn-warning btn-sm" onclick="deleteUser('{{ user._id }}')" data-toggle="modal" data-target="#delete-modal">Deshabilitar</button>
+                                        {% else %}
+                                            <a href="/users/enable/{{ user._id }}" class="btn btn-info btn-sm">Habilitar</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/users/user-modal.html" %}
+
+<!-- Delete Modal -->
+{% include "pages/users/delete-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const userForm = $('#user-form');
+    const userFormDelete = $('#delete-form');
+
+    function getUser(id) {
+        userForm.attr('action', '/users/update/' + id);
+        $('#user-modal-header').attr('class', 'modal-header bg-secondary');
+        $.get('/users/' + id, function(data) {
+            $('#name').val(data.name);
+            $('#lastname').val(data.lastname);
+            $('#username').val(data.username);
+            $('#email').val(data.email);
+            $('input[name = role][value = "'+ data.role._id.$oid +'"]').prop('checked', true);
+        });
+    }
+
+    function deleteUser(id) {
+        userFormDelete.attr('action', '/users/disable/' + id)
+    }
+
+    function resetModal() {
+        $('#user-modal-header').attr('class', 'modal-header bg-primary');
+        $('#name').val(null);
+        $('#lastname').val(null);
+        $('#username').val(null);
+        $('#email').val(null);
+        $('#role').val(null);
+        $('input[name=role]').prop('checked', false);
+    }
+
+    function resetFormAttributes() {
+        userForm.attr('action', '/users');
+    }
+
+    function resetUser() {
+        userFormDelete.attr('action', '#');
+    }
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

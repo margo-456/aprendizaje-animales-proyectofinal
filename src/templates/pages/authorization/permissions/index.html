@@ -1,0 +1,126 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}Permisos{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}Permisos{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item">Autorización</li>
+<li class="breadcrumb-item active">Permisos</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Alerta -->
+        {% if message %}
+        <div class="{{ alertClass }}" role="alert">
+            <strong>Error: </strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12 d-flex my-3">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#permission-modal" onclick="resetModal()">Agregar</button>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Permiso</th>
+                                    <th>Alias</th>
+                                    <th colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for permission in permissions %}
+                                <tr>
+                                    <td>{{ permission.permission }}</td>
+                                    <td>{{ permission.alias }}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" onclick="getPermission('{{ permission._id }}')" data-toggle="modal" data-target="#permission-modal">Editar</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deletePermission('{{ permission._id }}')" data-toggle="modal" data-target="#delete-modal">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/authorization/permissions/permission-modal.html" %}
+
+<!-- Delete Modal -->
+{% include "pages/authorization/permissions/delete-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const permissonForm = $('#permission-form');
+    const permissonFormDelete = $('#delete-form');
+
+    function getPermission(id) {
+        permissonForm.attr('action', '/permissions/update/' + id);
+        $('#permission-modal-header').attr('class', 'modal-header bg-secondary');
+        $.get('/permissions/' + id, function(data) {
+            console.log(data);
+            $('#permission').val(data.permission);
+            $('#alias').val(data.alias);
+        });
+    }
+
+    function deletePermission(id) {
+        permissonFormDelete.attr('action', '/permissions/delete/' + id)
+    }
+
+    function resetModal() {
+        resetFormAttributes();
+        $('#permission-modal-header').attr('class', 'modal-header bg-primary');
+        $('#permission').val(null);
+        $('#alias').val(null);
+    }
+
+    function resetFormAttributes() {
+        permissonForm.attr('action', '/permissions');
+    }
+
+    function resetPermission() {
+        permissonFormDelete.attr('action', '#');
+    }
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

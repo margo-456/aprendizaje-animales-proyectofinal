@@ -1,0 +1,98 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link d-flex align-items-center justify-content-center">
+        <!--<img src="{{ url_for('static', filename='assets/img/core-img/espe-logo.png') }}" class="brand-image brand-text" alt="ESPE Logo">-->
+        <img src="{{ url_for('static', filename='assets/img/core-img/jj.webp') }}" alt="Logo" width="300" height="70">
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/stilos2.css') }}">
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="/" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Inicio</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/qualifies" class="nav-link">
+                        <i class="nav-icon fas fa-star"></i>
+                        {% if session['user']['role']['role'] == 'admin' %}
+                            <p>Calificiones</p>
+                        {% else %}
+                            <p>Calificar</p>
+                        {% endif %}
+                    </a>
+                </li>
+                {% if session['user']['role']['role'] == 'admin' %}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <p>
+                                <span class="ml-1">Acceso</span>
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/permissions" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Permisos</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/roles" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Roles</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/users" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Usuarios</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/periods" class="nav-link">
+                            <i class="nav-icon fas fa-swatchbook"></i>
+                            <p>Periodos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/calendars" class="nav-link">
+                            <i class="nav-icon fas fa-calendar"></i>
+                            <p>Horarios</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/classrooms" class="nav-link">
+                            <i class="nav-icon fas fa-school"></i>
+                            <p>Aulas</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/matters" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>Materias</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/students" class="nav-link">
+                            <i class="nav-icon fas fa-user-graduate"></i>
+                            <p>Estudiantes</p>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

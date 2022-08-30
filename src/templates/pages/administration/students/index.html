@@ -1,0 +1,132 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}Estudiantes{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}Estudiantes{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item active">Estudiantes</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Alerta -->
+        {% if message %}
+        <div class="{{ alertClass }}" role="alert">
+            <strong>Error: </strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12 d-flex my-3">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#student-modal" onclick="resetModal()">Agregar</button>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Foto</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Curso</th>
+                                    <th>Periodo</th>
+                                    <th colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <!-- /file/d5uxc1h-1ea4bf58-9207-4e1e-a370-6bba45b1d13f.png -->
+                                    <td><img class="student-image" src="/file/{{ student.photo }}" alt="..." style="border-radius: 30px; width:30px; height: 30px;"></td>
+                                    <td>{{ student.name }}</td>
+                                    <td>{{ student.lastname }}</td>
+                                    <td>{{ student.course.classroom }} {{ student.course.parallel }}</td>
+                                    <td>{{ student.period.name }}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" onclick="getStudent('{{ student._id }}')" data-toggle="modal" data-target="#student-modal">Editar</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteStudent('{{ student._id }}')" data-toggle="modal" data-target="#delete-modal">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/administration/students/student-modal.html" %}
+
+<!-- Delete Modal -->
+{% include "pages/administration/students/delete-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const studentForm = $('#student-form');
+    const studentFormDelete = $('#delete-form');
+
+    function getStudent(id) {
+        studentForm.attr('action', '/students/update/' + id);
+        $('#student-modal-header').attr('class', 'modal-header bg-secondary');
+        $.get('/students/' + id, function(data) {
+            $('#name').val(data.name);
+            $('#lastname').val(data.lastname);
+            $('#course').val(data.course._id.$oid);
+        });
+    }
+
+    function deleteStudent(id) {
+        studentFormDelete.attr('action', '/students/delete/' + id)
+    }
+
+    function resetModal() {
+        $('#student-modal-header').attr('class', 'modal-header bg-primary');
+        $('#name').val(null);
+        $('#lastname').val(null);
+        $('#course').val(null);
+    }
+
+    function resetFormAttributes() {
+        studentForm.attr('action', '/students');
+    }
+
+    function resetstudent() {
+        studentFormDelete.attr('action', '#');
+    }
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

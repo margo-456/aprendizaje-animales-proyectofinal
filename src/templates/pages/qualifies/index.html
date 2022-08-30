@@ -1,0 +1,144 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}Calificaciones{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}Calificaciones{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item active">Calificaciones</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Alerta -->
+        {% if message %}
+        <div class="{{ alertClass }}" role="alert">
+            <strong>Error: </strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <div class="row">
+            {% if session['user']['role']['role'] != 'admin' %}
+                {% if nQualifies == 0 %}
+                    <div class="col-12 d-flex my-3">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#qualify-modal" onclick="resetModal()">Agregar</button>
+                    </div>
+                    {% endif %}
+            {% else %}    
+                <div class="col-12 d-flex my-3">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#qualify-modal" onclick="resetModal()">Agregar</button>
+                </div>
+            {% endif %}
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    {% if session['user']['role']['role'] == 'admin' %}
+                                        <th>Usuario</th>
+                                    {% endif %}
+                                    <th>Calificación</th>
+                                    <th>Comentario</th>
+                                    <th colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for qualify in qualifies %}
+                                <tr>
+                                    {% if session['user']['role']['role'] == 'admin' %}
+                                        <td>{{ qualify.user.username }}</td>
+                                    {% endif %}
+                                    <td><b class="mr-3">{{ qualify.note }}</b> Estrellas</td>
+                                    {% if qualify.comments %}
+                                        <td>{{ qualify.comments }}</td>
+                                    {% else %}
+                                        <td>Sin comentarios</td>
+                                    {% endif %}
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" onclick="getQualify('{{ qualify._id }}')" data-toggle="modal" data-target="#qualify-modal">Editar</button>
+                                    </td>
+                                    {% if session['user']['role']['role'] == 'admin' %}
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteQualify('{{ qualify._id }}')" data-toggle="modal" data-target="#delete-modal">Eliminar</button>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/qualifies/qualifies-modal.html" %}
+
+<!-- Delete Modal -->
+{% include "pages/qualifies/delete-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const qualifyForm = $('#qualify-form');
+    const qualifyFormDelete = $('#delete-form');
+
+    function getQualify(id) {
+        qualifyForm.attr('action', '/qualifies/update/' + id);
+        $('#qualify-modal-header').attr('class', 'modal-header bg-secondary');
+        $.get('/qualifies/' + id, function(data) {
+            console.log(data);
+            $('#note').val(data.note);
+            $('#comments').val(data.comments);
+        });
+    }
+
+    function deleteQualify(id) {
+        qualifyFormDelete.attr('action', '/qualifies/delete/' + id)
+    }
+
+    function resetModal() {
+        $('#qualify-modal-header').attr('class', 'modal-header bg-primary');
+        $('#note').val(null);
+        $('#comments').val(null);
+    }
+
+    function resetFormAttributes() {
+        qualifyForm.attr('action', '/qualifies');
+    }
+
+    function resetqualify() {
+        qualifyFormDelete.attr('action', '#');
+    }
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

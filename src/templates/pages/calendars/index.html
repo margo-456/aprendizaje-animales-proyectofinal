@@ -1,0 +1,128 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}Horarios{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}Horarios{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item active">Horarios</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Alerta -->
+        {% if message %}
+        <div class="{{ alertClass }}" role="alert">
+            <strong>Error: </strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12 d-flex my-3">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#calendar-modal" onclick="resetModal()">Agregar</button>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Horario</th>
+                                    <th>Inicio</th>
+                                    <th>Fin</th>
+                                    <th colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for calendar in calendars %}
+                                <tr>
+                                    <td>{{ calendar.name }}</td>
+                                    <td>{{ calendar.start_at }}</td>
+                                    <td>{{ calendar.end_at }}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" onclick="getCalendar('{{ calendar._id }}')" data-toggle="modal" data-target="#calendar-modal">Editar</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteCalendar('{{ calendar._id }}')" data-toggle="modal" data-target="#delete-modal">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/calendars/calendar-modal.html" %}
+
+<!-- Delete Modal -->
+{% include "pages/calendars/delete-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const calendarForm = $('#calendar-form');
+    const calendarFormDelete = $('#delete-form');
+
+    function getCalendar(id) {
+        calendarForm.attr('action', '/calendars/update/' + id);
+        $('#calendar-modal-header').attr('class', 'modal-header bg-secondary');
+        $.get('/calendars/' + id, function(data) {
+            console.log(data);
+            $('#name').val(data.name);
+            $('#start_at').val(data.start_at);
+            $('#end_at').val(data.end_at);
+        });
+    }
+
+    function deleteCalendar(id) {
+        calendarFormDelete.attr('action', '/calendars/delete/' + id)
+    }
+
+    function resetModal() {
+        $('#calendar-modal-header').attr('class', 'modal-header bg-primary');
+        $('#name').val(null);
+        $('#start_at').val(null);
+        $('#end_at').val(null);
+    }
+
+    function resetFormAttributes() {
+        calendarForm.attr('action', '/calendars');
+    }
+
+    function resetcalendar() {
+        calendarFormDelete.attr('action', '#');
+    }
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

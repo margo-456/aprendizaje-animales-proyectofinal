@@ -1,0 +1,91 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}{{ classroom.classroom }} {{ classroom.parallel }}{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}{{ classroom.classroom }} {{ classroom.parallel }}{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item active">{{ classroom.classroom }} {{ classroom.parallel }}</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            {% for student in students %}
+                <div class="col-lg-4">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h5 class="m-0">{{ student.name }} {{ student.lastname }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img class="img-circle elevation-2" src="/file/{{ student.photo }}" alt="..." style="width: 200px; height: 200px;">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <b>Puntaje:</b>
+                                    <span> {{ student['course']['note'] }}/10</span>
+                                </div>
+                                <div>
+                                    <b>Intentos:</b>
+                                    <span> {{ student['course']['attempts'] }}</span>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#qualify-modal" onclick="getStudent('{{ student._id }}')">Calificar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/teacher/qualify-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const studentForm = $('#qualify-form');
+
+    function getStudent(id) {
+        studentForm.attr('action', '/students/note/' + id);
+        $.get('/students/' + id, function(data) {
+            $('#note').val(data.course.note);
+        });
+    }
+
+    function resetModal() {
+        $('#note').val(null);
+        studentForm.attr('action', '#');
+    }
+
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

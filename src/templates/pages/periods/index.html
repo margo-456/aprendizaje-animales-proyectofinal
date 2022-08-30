@@ -1,0 +1,128 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}Periodos{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}Periodos{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item active">Periodos</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Alerta -->
+        {% if message %}
+        <div class="{{ alertClass }}" role="alert">
+            <strong>Error: </strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12 d-flex my-3">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#period-modal" onclick="resetModal()">Agregar</button>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Periodo</th>
+                                    <th>Inicio</th>
+                                    <th>Fin</th>
+                                    <th colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for period in periods %}
+                                <tr>
+                                    <td>{{ period.name }}</td>
+                                    <td>{{ period.start_at }}</td>
+                                    <td>{{ period.end_at }}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" onclick="getPeriod('{{ period._id }}')" data-toggle="modal" data-target="#period-modal">Editar</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deletePeriod('{{ period._id }}')" data-toggle="modal" data-target="#delete-modal">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/periods/period-modal.html" %}
+
+<!-- Delete Modal -->
+{% include "pages/periods/delete-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const periodForm = $('#period-form');
+    const periodFormDelete = $('#delete-form');
+
+    function getPeriod(id) {
+        periodForm.attr('action', '/periods/update/' + id);
+        $('#period-modal-header').attr('class', 'modal-header bg-secondary');
+        $.get('/periods/' + id, function(data) {
+            console.log(data);
+            $('#name').val(data.name);
+            $('#start_at').val(data.start_at);
+            $('#end_at').val(data.end_at);
+        });
+    }
+
+    function deletePeriod(id) {
+        periodFormDelete.attr('action', '/periods/delete/' + id)
+    }
+
+    function resetModal() {
+        $('#period-modal-header').attr('class', 'modal-header bg-primary');
+        $('#name').val(null);
+        $('#start_at').val(null);
+        $('#end_at').val(null);
+    }
+
+    function resetFormAttributes() {
+        periodForm.attr('action', '/periods');
+    }
+
+    function resetperiod() {
+        periodFormDelete.attr('action', '#');
+    }
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

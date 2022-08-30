@@ -1,0 +1,53 @@
+<div class="modal fade" id="classroom-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="classroom-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <form action="/classrooms" method="POST" class="modal-content" id="classroom-form">
+            <div class="modal-header bg-primary" id="classroom-modal-header">
+                <h5 class="modal-title" id="classroom-modalLabel">Nuevo Curso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetFormAttributes()">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="form-group col-6">
+                    <label for="classroom">Grado</label>
+                    <input type="text" class="form-control" id="classroom" name="classroom" required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="parallel">Paralelo</label>
+                    <select class="custom-select" name="parallel" id="parallel" placeholder="Selecione...">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <div class="form-group col-6">
+                    <label for="capacity">Capacidad</label>
+                    <input type="number" class="form-control" name="capacity" id="capacity" min="1" max="10" required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="teacher">Docente Tutor</label>
+                    <select class="custom-select" name="tutor" id="tutor">
+                        <option selected>Seleccione...</option>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher._id }}">{{ teacher.name }} {{ teacher.lastname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-6">
+                    <label for="calendar">Horario</label>
+                    <select class="custom-select" name="calendar" id="calendar">
+                        <option selected>Seleccione...</option>
+                        {% for calendar in calendars %}
+                            <option value="{{ calendar._id }}">{{ calendar.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetFormAttributes()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

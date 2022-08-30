@@ -1,0 +1,33 @@
+<div class="modal fade" id="qualify-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="qualify-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <form action="/qualifies" method="POST" class="modal-content" id="qualify-form">
+            <div class="modal-header bg-primary" id="qualify-modal-header">
+                <h5 class="modal-title" id="qualify-modalLabel">Registrar Calificación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetFormAttributes()">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="form-group col-12">
+                    <div class="row justify-content-center">
+                        <img src="../../../static/assets/img/core-img/star.png" alt="..." style="height: 150px;">
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-16">
+                            <label for="name">Calificación en estreas (1 a 5)</label>
+                            <input type="number" class="form-control" id="note" name="note" min="1" max="5" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label for="comments">Comentario</label>
+                    <textarea class="form-control" name="comments" id="comments"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetFormAttributes()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>APRENDER LOS ANIMALES</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+
+</head>
+
+<body>
+    <!-- Clase que muestra el animal y puntaje-->
+    <div class="app">
+        <h1>QUE ANIMAL ES</h1>
+        <div class="whole-body">🐄</div>
+        <div class="bingo">
+            <img src="https://i.gifer.com/3VQL.gif" width="130" height="130">
+            <span class="again">&#9199</span>
+             <div>
+              PUNTAJE:10
+
+             </div>
+
+
+        </div>
+        <div class="selector">
+            <span class="slider"></span>
+               <!-- Seleccion de forma aleatoria del animal -->
+            <span class="face">🐭</span>
+            <span class="face">🐶</span>
+            <span class="face">🐷</span>
+            <span class="face">🐮</span>
+            <span class="face">🐯</span>
+        </div>
+    </div>
+    <!-- partial -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js'></script>
+    <script src="{{ url_for('static', filename='assets/js/script.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<div class="modal fade" id="period-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="period-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <form action="/periods" method="POST" class="modal-content" id="period-form">
+            <div class="modal-header bg-primary" id="period-modal-header">
+                <h5 class="modal-title" id="period-modalLabel">Nuevo Periodo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetFormAttributes()">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="form-group col-12">
+                    <label for="name">Nombre del Periodo</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="start_at">Inicio</label>
+                    <input type="date" class="form-control" name="start_at" id="start_at" required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="end_at">Fin</label>
+                    <input type="date" class="form-control" name="end_at" id="end_at" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetFormAttributes()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

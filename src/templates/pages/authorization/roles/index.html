@@ -1,0 +1,126 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}Usuarios{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start CSS Page -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End CSS Page -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Page Title -->
+{% block page_title %}Usuarios{% endblock %}
+
+<!-- Navegation Page -->
+{% block page_navigation %}
+<li class="breadcrumb-item">Autorización</li>
+<li class="breadcrumb-item active">Roles</li>
+{% endblock %}
+
+<!-- Main Content -->
+{% block main_content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Alerta -->
+        {% if message %}
+        <div class="{{ alertClass }}" role="alert">
+            <strong>Error: </strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12 d-flex my-3">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#role-modal" onclick="resetModal()">Agregar</button>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Rol</th>
+                                    <th>Alias</th>
+                                    <th colspan="2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for role in roles %}
+                                <tr>
+                                    <td>{{ role.role }}</td>
+                                    <td>{{ role.alias }}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" onclick="getRole('{{ role._id }}')" data-toggle="modal" data-target="#role-modal">Editar</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteRole('{{ role._id }}')" data-toggle="modal" data-target="#delete-modal">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- Create Modal -->
+{% include "pages/authorization/roles/role-modal.html" %}
+
+<!-- Delete Modal -->
+{% include "pages/authorization/roles/delete-modal.html" %}
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    const roleForm = $('#role-form');
+    const roleFormDelete = $('#delete-form');
+
+    function getRole(id) {
+        roleForm.attr('action', '/roles/update/' + id);
+        $('#role-modal-header').attr('class', 'modal-header bg-secondary');
+        $.get('/roles/' + id, function(data) {
+            console.log(data);
+            $('#role').val(data.role);
+            $('#alias').val(data.alias);
+        });
+    }
+
+    function deleteRole(id) {
+        roleFormDelete.attr('action', '/roles/delete/' + id)
+    }
+
+    function resetModal() {
+        resetFormAttributes();
+        $('#role-modal-header').attr('class', 'modal-header bg-primary');
+        $('#role').val(null);
+        $('#alias').val(null);
+    }
+
+    function resetFormAttributes() {
+        roleForm.attr('action', '/roles');
+    }
+
+    function resetRole() {
+        roleFormDelete.attr('action', '#');
+    }
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->

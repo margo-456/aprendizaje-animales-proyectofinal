@@ -1,0 +1,63 @@
+{% extends "layouts/admin-lte.html" %}
+
+<!-- Title -->
+{% block title %}404 Page not found{% endblock %}
+
+<!-- Start Custom CSS Block -->
+{% block css_page %}
+<!-- Start Page CSS -->
+<style>
+    /**/
+</style>
+<link rel="stylesheet" href="">
+<!-- End Page CSS -->
+{% endblock %}
+<!-- End Custom CSS Block -->
+
+<!-- Start Content Block -->
+{% block content %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Error 404: Página no encontrada</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">Error 404</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="error-page">
+        <h2 class="headline text-warning"> 404</h2>
+
+        <div class="error-content">
+            <h3><i class="fas fa-exclamation-triangle text-warning"></i> Página no encontrada.</h3>
+
+            <p>No pudimos encontrar la página que estabas buscando. Mientras tanto, puedes <a href="/">volver al dashboard</a></p>
+        </div>
+        <!-- /.error-content -->
+    </div>
+    <!-- /.error-page -->
+</section>
+<!-- /.content -->
+{% endblock %}
+<!-- End Content Block -->
+
+<!-- Start Custom JS Block -->
+{% block js_page %}
+<!-- Start Page JS -->
+<script>
+    //
+</script>
+<script src=""></script>
+<!-- End Page JS -->
+{% endblock %}
+<!-- Start Custom JS Block -->
