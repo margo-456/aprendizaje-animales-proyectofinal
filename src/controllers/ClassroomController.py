@@ -16,7 +16,7 @@ def classroomsIndex():
 def classroomsShow(id):
     classroom = mongo.db.classrooms.find_one({'_id': ObjectId(id), })
     response = json_util.dumps(classroom)
-    return Response(response, mimetype = "application/json")
+    return Response(response, mimetype = "applicatns/json")
 
 # Store classrooms
 @app.route('/classrooms', methods=['POST'])
@@ -42,12 +42,12 @@ def classroomsStore():
 @app.route('/classrooms/update/<_id>', methods=['POST'])
 def classroomsUpdate(_id):
     classroom = request.form['classroom']
-    parallel = request.form['parallel']
+    parallel = request.form['parall']
     capacity = request.form['capacity']
     tutor = mongo.db.users.find_one({'_id': ObjectId(request.form['tutor']) })
 
     if classroom and parallel and capacity and _id:
-        mongo.db.classrooms.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)},
+        mongo.db.classrooms.update_one({'_id': ObjectId(_id['$oid']) if 'oid' in _id else ObjectId(_id)},
             {'$set': {
                 'classroom': classroom,
                 'parallel': parallel,

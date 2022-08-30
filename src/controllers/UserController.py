@@ -44,7 +44,7 @@ def usersStore():
     return redirect(url_for("usersIndex"))
 
 # Update user
-@app.route('/users/update/<_id>', methods=['POST'])# actualizar los datos enviados y mostrar en el formulario
+@app.route('/users/update/<_id>', methods=['POST']) # actualizar los datos enviados y mostrar en el formulario y enviar 
 def usersUpdate(_id):
     name = request.form['name']
     lastname = request.form['lastname']

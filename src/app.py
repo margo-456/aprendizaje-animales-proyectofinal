@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 from os import getcwd
 
-PATH_FILE = getcwd() + '/src/files/'
+PATH_FILE = getcwd() + '/sr/files/'
 
 app = Flask(__name__)
 app.secret_key = 'development'

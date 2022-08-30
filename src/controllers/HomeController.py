@@ -13,7 +13,7 @@ def index():
             nClassrooms = mongo.db.classrooms.count_documents({}) # para acceder al menu del las aulas
             return render_template('index.html', classrooms = classrooms, nUsers = nUsers, nStudets = nStudets, nCalendars = nCalendars, nClassrooms = nClassrooms)
         if session['user']['role']['role'] == 'teacher':
-            classrooms = mongo.db.classrooms.find({ 'tutor._id': ObjectId(session['user']['_id']['$oid']) })
+            classrooms = mongo.db.classrooms.find({ 'tutor._id': ObjectId(session['user']['id']['oid']) })
             return render_template('pages/home/teacher/index.html', classrooms = classrooms)
     else:
         return redirect(url_for("login"))
@@ -28,11 +28,11 @@ def indexStudent():
 # Index users
 @app.route('/game', methods=['GET'])
 def game():
-    return render_template('pages/student/game.html')
+    return render_template('pages/student/gam.html')
 
 # Course
 @app.route('/course/<id>', methods=['GET'])
 def course(id):
-    classroom = mongo.db.classrooms.find_one({'_id': ObjectId(id), }) #los objetos de curso para guardar los datos en mongo
-    students = mongo.db.students.find({'course._id': ObjectId(id), })# los objetos de los estudieantes para guardar los datos en mongo
-    return render_template('pages/teacher/course.html', students = students, classroom = classroom)
+    classroom = mongo.db.classrooms.find_one({'id': ObjectId(id), }) #los objetos de curso para guardar los datos en mongo
+    students = mongo.db.students.find({'course.id': ObjectId(id), })# los objetos de los estudieantes para guardar los datos en mongo
+    return render_template('pages/teachr/course.html', students = students, classroom = classroom)

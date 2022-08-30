@@ -5,13 +5,13 @@ from app import mongo #libreria de mongo
 
 """funcion que permite guardar las calificaciones de la app por parte de los usuarios"""
 
-@app.route('/qualifies', methods=['GET'])
+@app.route('/qualdifies', methods=['GET'])
 def qualifiesIndex():
     if session['user']['role']['role'] == 'admin':
         qualifies = mongo.db.qualifies.find()
         nQualifies = mongo.db.qualifies.count_documents({})# enviamos la clasificacion a la base de datos mongo
     else:
-        qualifies = mongo.db.qualifies.find({ 'user._id': ObjectId(session['user']['_id']['$oid']) })
+        qualifies = mongo.db.qualifies.find({ 'user._id': ObjectId(session['user']['id']['$oid']) })
         nQualifies = mongo.db.qualifies.count_documents({ 'user._id': ObjectId(session['user']['_id']['$oid']) })
     return render_template('pages/qualifies/index.html', qualifies = qualifies, nQualifies = nQualifies)
 
